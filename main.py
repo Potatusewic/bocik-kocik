@@ -1,4 +1,4 @@
-import os
+import os 
 import time
 from dotenv import load_dotenv
 from flask import Flask
@@ -27,6 +27,17 @@ intents.guilds = True
 intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
+
+# ✅ STATUS: Looking: Perfect club for you 🧐
+@bot.event
+async def on_ready():
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.custom,
+            name="Looking: Perfect club for you 🧐"
+        )
+    )
+    print(f"Bot is ready. Logged in as {bot.user}")
 
 # === CONFIGURATION ===
 ID_KANAŁU_SEARCH = 1367975025990307881     # #🔎search-club🔎
