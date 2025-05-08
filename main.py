@@ -1,4 +1,4 @@
-import os
+import os 
 import time
 from dotenv import load_dotenv
 from flask import Flask
@@ -27,6 +27,13 @@ intents.guilds = True
 intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
+
+# === STATUS BOTA ===
+@bot.event
+async def on_ready():
+    activity = discord.Game(name="In process: looking a club for you🧐")
+    await bot.change_presence(status=discord.Status.online, activity=activity)
+    print(f'Bot {bot.user} jest gotowy i status został ustawiony.')
 
 # === CONFIGURATION ===
 ID_KANAŁU_SEARCH = 1367975025990307881     # #🔎search-club🔎
