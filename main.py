@@ -99,9 +99,10 @@ async def on_raw_reaction_add(payload):
     if now - last_used < COOLDOWN_SECONDS:
         remaining = int((COOLDOWN_SECONDS - (now - last_used)) // 60)
         try:
-            await user.send(
-                f"⏳ You can only apply for **{emoji}** once every 2 hours. Please wait {remaining} more minutes."
-            )
+            await user.send(f"""
+⏳ You can only apply for **{emoji}** once every 2 hours. Please wait {remaining} more minutes.
+--------------------------------------------------------------------------------------------------------
+""")
         except discord.Forbidden:
             pass
         return
@@ -111,9 +112,10 @@ async def on_raw_reaction_add(payload):
     free_agents_channel = guild.get_channel(ID_KANAŁU_FREE_AGENTS)
 
     if role:
-        msg = await free_agents_channel.send(
-            f"{user.mention} looking for a club {role.mention}"
-        )
+    msg = await free_agents_channel.send(
+        f"{user.mention} looking for a club {role.mention}\n"
+        "--------------------------------------------------------------------------------------------------------"
+    )
         user_message_map[(payload.user_id, emoji)] = msg.id
         emoji_cooldowns[cooldown_key] = now
 
