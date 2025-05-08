@@ -29,17 +29,17 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # === CONFIGURATION ===
-ID_KANAŁU_SEARCH = 1367975025990307881     # #🖎search-club🖎
-ID_KANAŁU_FREE_AGENTS = 1258017564185989226  # #🏛free-agents🏛
+ID_KANAŁU_SEARCH = 1367975025990307881     # #🔎search-club🔎
+ID_KANAŁU_FREE_AGENTS = 1258017564185989226  # #🌝free-agents🌝
 ID_KANAŁU_AUTOROLE = 1367984711988940922
 ID_KANAŁU_REGISTRATION = 1367982248841842790
-REQUIRED_ROLE_NAME = "➪🎮➫ PLAYER"
+REQUIRED_ROLE_NAME = "⟪🎮⟫ PLAYER"
 
 ROLE_MAP = {
-    "🧤": "➪🧤➫ SEARCH GK",
-    "🧱": "➪🧱➫ SEARCH CB",
-    "👟": "➪👟➫ SEARCH CM",
-    "⚽": "➪⚽➫ SEARCH ST"
+    "🧤": "⟪🧤⟫ SEARCH GK",
+    "🧱": "⟪🧱⟫ SEARCH CB",
+    "👟": "⟪👟⟫ SEARCH CM",
+    "⚽": "⟪⚽⟫ SEARCH ST"
 }
 
 user_message_map = {}
@@ -55,13 +55,13 @@ async def setup_message(ctx):
         "Good to hear you're looking for a club. Several teams are still looking for players.\n"
         "**What position you prefer to play? (you can choose multiple positions)**\n"
         "---------------------------------------------------------------------------------------------------------\n"
-        "⌚🧤⌛ - If you're a GK\n"
+        "⌊🧤⌉ - If you're a GK\n"
         "---------------------------------------------------------------------------------------------------------\n"
-        "⌚🧱⌛ - If you're a CB\n"
+        "⌊🧱⌉ - If you're a CB\n"
         "---------------------------------------------------------------------------------------------------------\n"
-        "⌚👟⌛ - If you're a CM\n"
+        "⌊👟⌉ - If you're a CM\n"
         "---------------------------------------------------------------------------------------------------------\n"
-        "⌚⚽⌛ - If you're a ST\n"
+        "⌊⚽⌉ - If you're a ST\n"
         "---------------------------------------------------------------------------------------------------------\n"
         f"**Please delete your reactions after you find a club as this will remove your application from the <#{ID_KANAŁU_FREE_AGENTS}>**\n"
         f"**IMPORTANT: First you must have a {REQUIRED_ROLE_NAME} role to find a club. You can get it in <#{ID_KANAŁU_AUTOROLE}>**"
@@ -119,13 +119,13 @@ async def on_raw_reaction_add(payload):
         user_message_map[(payload.user_id, emoji)] = msg.id
         emoji_cooldowns[cooldown_key] = now
 
-        player_count = len(role.members)
+        player_count = sum(1 for member in guild.members if role in member.roles)
 
         try:
             await user.send(
                 f"Good! {player_count} teams are looking for players like you.\n\n"
                 "Wait a few hours/days and we will find the perfect club for you.\n\n"
-                "If the number of clubs that need you is 0, there are probably no more free spots in the teams.\n"
+                f"If the number of clubs that need you is 0, there are probably no more free spots in the teams.\n"
                 f"You can create your team in the <#{ID_KANAŁU_REGISTRATION}> and we will help you find players.\n"
                 "--------------------------------------------------------------------------------------------------------"
             )
