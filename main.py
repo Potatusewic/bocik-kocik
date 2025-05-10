@@ -165,6 +165,42 @@ async def on_raw_reaction_remove(payload):
         del user_message_map[key]
     except discord.NotFound:
         pass
+@bot.event
+async def on_raw_reaction_remove(payload):
+    if payload.channel_id != ID_KANAŁU_SEARCH:
+        return
+
+    emoji = payload.emoji.name
+    key = (payload.user_id, emoji)
+    if key not in user_message_map:
+        return
+
+    message_id = user_message_map[key]
+    guild = bot.get_guild(payload.guild_id)
+    free_agents_channel = guild.get_channel(ID_KANAŁU_FREE_AGENTS)
+
+    try:
+        msg = await free_agents_channel.fetch_message(message_id)
+        await msg.delete()
+        del user_message_map[key]
+    except discord.NotFound:
+        pass
+
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+
+    if message.channel.id == ID_KANAŁU_REGISTRATION:
+        if len(message.content) >= 30:
+            role_name = "⟪👔⟫ CAPTAIN"
+            role = discord.utils.get(message.guild.roles, name=role_name)
+
+            if role and role not in message.author.roles:
+                await message.author.add_roles(role)
+
+    await bot.process_commands(message)
+
 
 # Start keep-alive server and bot
 if __name__ == "__main__":
